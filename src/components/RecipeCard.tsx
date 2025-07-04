@@ -13,7 +13,6 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
   const handleFavoritoClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    
     if (isFavorito(recipe.id)) {
       removeFromFavoritos(recipe.id);
     } else {
@@ -41,10 +40,11 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
             e.currentTarget.src = '/placeholder-recipe.svg';
           }}
         />
-        <button 
-          className={`favorite-btn ${isFavorito(recipe.id) ? 'active' : ''}`}
+        <button
+          className={`favorite-btn${isFavorito(recipe.id) ? ' active' : ''}`}
           onClick={handleFavoritoClick}
           aria-label={isFavorito(recipe.id) ? 'Quitar de favoritos' : 'Agregar a favoritos'}
+          style={{ position: 'absolute', top: 8, right: 8, background: 'none', border: 'none', cursor: 'pointer', fontSize: 24 }}
         >
           {isFavorito(recipe.id) ? '❤️' : '🤍'}
         </button>

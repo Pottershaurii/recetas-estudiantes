@@ -6,6 +6,7 @@ import RecipesPage from './pages/RecipesPage';
 import FavoritesPage from './pages/FavoritesPage';
 import CreateRecipePage from './pages/CreateRecipePage';
 import RecipeDetailPage from './pages/RecipeDetailPage';
+import StatsPage from './pages/StatsPage'; //Acá importo la página de estadísticas
 import './App.css';
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
               <Route path="/favoritas" element={<FavoritesPage />} />
               <Route path="/crear" element={<CreateRecipePage />} />
               <Route path="/receta/:id" element={<RecipeDetailPage />} />
+              <Route path="/stats" element={<StatsPage />} /> {/* Acá agrego la ruta de la pagina de estadisticas */}
             </Routes>
           </main>
         </div>

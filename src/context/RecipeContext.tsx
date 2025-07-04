@@ -3,6 +3,7 @@ import React, { createContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
 import type { Recipe } from '../types/Recipe';
 import recetasData from '../data/recetas.json';
+import { getFavorites, addFavorite, removeFavorite, isFavorite } from '../services/favoritesService';
 
 interface RecipeContextType {
   recetas: Recipe[];
@@ -25,27 +26,30 @@ export const RecipeProvider: React.FC<RecipeProviderProps> = ({ children }) => {
 
   // useEffect para cargar favoritos del localStorage
   useEffect(() => {
-    const favoritosGuardados = localStorage.getItem('favoritos');
-    if (favoritosGuardados) {
-      setFavoritos(JSON.parse(favoritosGuardados));
-    }
+    const favoritosGuardados = getFavorites().map(r => r.id);
+    setFavoritos(favoritosGuardados);
   }, []);
 
-  // useEffect para guardar favoritos en localStorage
   useEffect(() => {
-    localStorage.setItem('favoritos', JSON.stringify(favoritos));
-  }, [favoritos]);
+    const recetasFavoritas = recetas.filter(r => favoritos.includes(r.id));
+    localStorage.setItem('favoriteRecipes', JSON.stringify(recetasFavoritas));
+  }, [favoritos, recetas]);
 
   const addToFavoritos = (id: number) => {
-    setFavoritos(prev => [...prev, id]);
+    const receta = recetas.find(r => r.id === id);
+    if (receta) {
+      addFavorite(receta);
+      setFavoritos(prev => [...prev, id]);
+    }
   };
 
   const removeFromFavoritos = (id: number) => {
+    removeFavorite(id);
     setFavoritos(prev => prev.filter(favId => favId !== id));
   };
 
   const isFavorito = (id: number) => {
-    return favoritos.includes(id);
+    return isFavorite(id);
   };
 
   const addReceta = (nuevaReceta: Omit<Recipe, 'id'>) => {
